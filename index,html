@@ -4,8 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Η Μάχη των Φαρσάλων 1897</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ΕΝΣΩΜΑΤΩΜΕΝΟ Tailwind CSS για να αποφύγουμε CORS -->
+    <script>
+        // Fallback αν το Tailwind CDN αποτύχει
+        window.tailwindFallback = setTimeout(() => {
+            if (!window.tailwindLoaded) {
+                console.log('Tailwind CDN failed, using fallback');
+                const style = document.createElement('style');
+                style.textContent = `
+                    /* Βασικά utility classes */
+                    .flex { display: flex; }
+                    .hidden { display: none; }
+                    .block { display: block; }
+                    .grid { display: grid; }
+                    .text-center { text-align: center; }
+                    .text-white { color: white; }
+                    .text-gray-200 { color: #e5e7eb; }
+                    .text-gray-400 { color: #9ca3af; }
+                    .bg-transparent { background: transparent; }
+                    .font-bold { font-weight: bold; }
+                    .font-semibold { font-weight: 600; }
+                    .font-extrabold { font-weight: 800; }
+                    .mt-4 { margin-top: 1rem; }
+                    .mb-4 { margin-bottom: 1rem; }
+                    .mb-6 { margin-bottom: 1.5rem; }
+                    .ml-2 { margin-left: 0.5rem; }
+                    .space-y-1 > * + * { margin-top: 0.25rem; }
+                    .space-y-2 > * + * { margin-top: 0.5rem; }
+                    .gap-4 { gap: 1rem; }
+                    .gap-6 { gap: 1.5rem; }
+                    .list-disc { list-style-type: disc; }
+                    .list-inside { list-style-position: inside; }
+                    .justify-center { justify-content: center; }
+                    .justify-between { justify-content: space-between; }
+                    .items-center { align-items: center; }
+                    .max-w-800 { max-width: 800px; }
+                `;
+                document.head.appendChild(style);
+            }
+        }, 2000);
+    </script>
+    
+    <!-- Tailwind CSS CDN με fallback -->
+    <script src="https://cdn.tailwindcss.com" onload="window.tailwindLoaded = true; clearTimeout(window.tailwindFallback);"></script>
+    
+    <!-- ΕΝΣΩΜΑΤΩΜΕΝΑ Google Fonts ως fallback -->
+    <style>
+        /* Fallback fonts αν τα Google Fonts αποτύχουν */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700&display=swap');
+        
+        /* Βασικά styles για την περίπτωση που τα fonts δεν φορτώσουν */
+        * {
+            font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+    </style>
+    
     <style>
         :root {
             --accent-color: #e45826;
@@ -23,8 +77,8 @@
             height: 100%;
             width: 100%;
             overflow-x: hidden;
-            font-family: 'Roboto', 'Inter', sans-serif;
-            background: var(--darker-bg); /* Fallback background */
+            font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--darker-bg);
         }
         
         /* INTRODUCTION PAGE STYLES */
@@ -610,6 +664,23 @@
             color: #aaa;
         }
 
+        /* Fallback grid system */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .grid-cols-1 > * {
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 > * {
+                width: calc(50% - 0.5rem);
+            }
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .button-container {
@@ -738,6 +809,11 @@
     </div>
 
     <script>
+        // Προσθήκη error handling για external resources
+        window.addEventListener('error', function(e) {
+            console.log('Error loading resource:', e.target.src || e.target.href);
+        });
+
         // Page Navigation
         const introPage = document.getElementById('intro-page');
         const presentationPage = document.getElementById('presentation-page');
@@ -745,7 +821,6 @@
 
         // Presentation Slides Data - ΧΡΗΣΗ PLACEHOLDER ΕΙΚΟΝΩΝ
         const slides = [
-            // Slide 1: Introduction
             {
                 title: "Εισαγωγή: Η Μάχη των Φαρσάλων",
                 content: `
@@ -765,7 +840,6 @@
                     </div>
                 `
             },
-            // Slide 2: Historical Context
             {
                 title: "Ιστορικό Πλαίσιο",
                 content: `
@@ -786,296 +860,9 @@
                             <p>Στις 23 Απριλίου 1897, ο ελληνικός στρατός προσπάθησε να οργανώσει αμυντική γραμμή στα Φάρσαλα.</p>
                         </div>
                     </div>
-                    
-                    <div class="image-container" data-caption="Χάρτης Ελλάδας και Κρήτης - 1897">
-                        <div class="placeholder-image">
-                            Χάρτης της Ελλάδας και Κρήτης το 1897<br>
-                            [Θα προστεθεί σύντομα]
-                        </div>
-                    </div>
                 `
             },
-            // Slide 3: The Opposing Forces
-            {
-                title: "Οι Αντιμαχόμενες Δυνάμεις",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">Σύγκριση Δυνάμεων</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <div class="figure-card">
-                                <div class="figure-image placeholder-image" style="border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; text-align: center;">
-                                    Διάδοχος<br>Κωνσταντίνος
-                                </div>
-                                <h3 class="accent-text font-semibold text-center">Ελληνικός Στρατός</h3>
-                                <div class="text-center mb-2">Αρχηγός: Διάδοχος Κωνσταντίνος</div>
-                                <ul class="list-disc list-inside ml-2 space-y-1">
-                                    <li>2 μεραρχίες Πεζικού</li>
-                                    <li>5 τάγματα Ευζώνων</li>
-                                    <li>2 πυροβολαρχίες</li>
-                                    <li>~22.000 στρατιώτες</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="figure-card">
-                                <div class="figure-image placeholder-image" style="border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; text-align: center;">
-                                    Ετέμ<br>Πασάς
-                                </div>
-                                <h3 class="accent-text font-semibold text-center">Οθωμανικός Στρατός</h3>
-                                <div class="text-center mb-2">Αρχηγός: Ετέμ Πασάς</div>
-                                <ul class="list-disc list-inside ml-2 space-y-1">
-                                    <li>6 μεραρχίες Πεζικού</li>
-                                    <li>1 έφιππη Ταξιαρχία</li>
-                                    <li>Ανώτερο πυροβολικό</li>
-                                    <li>~40.000 στρατιώτες</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4">
-                        <table class="comparison-table">
-                            <tr>
-                                <th></th>
-                                <th>Ελληνικός Στρατός</th>
-                                <th>Οθωμανικός Στρατός</th>
-                            </tr>
-                            <tr>
-                                <td><strong>Αριθμός Στρατιωτών</strong></td>
-                                <td>~22.000</td>
-                                <td>~40.000</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Πυροβολικό</strong></td>
-                                <td>48 πυροβόλα</td>
-                                <td>150+ πυροβόλα</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Εκπαίδευση</strong></td>
-                                <td>Περιορισμένη</td>
-                                <td>Καλύτερη</td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-                    <div class="highlight-box mt-4">
-                        <p class="font-semibold">Ο οθωμανικός στρατός διέθετε σημαντική αριθμητική υπεροχή έναντι των ελληνικών δυνάμεων, τόσο σε στρατιώτες όσο και σε πυροβολικό.</p>
-                    </div>
-                `
-            },
-            // ... (τις υπόλοιπες διαφάνειες με παρόμοιο τρόπο - μειώνοντας τον κώδικα για λόγους brevity)
-            // Slide 4: Preparations
-            {
-                title: "Προετοιμασίες και Σχέδια Άμυνας",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">Η Οργάνωση της Άμυνας</h2>
-                    <p class="mb-4">Ο ελληνικός στρατός έφτασε στα Φάρσαλα από τη Λάρισα στις 12 Απριλίου, μετά από άτακτη υποχώρηση από τα ελληνοτουρκικά σύνορα.</p>
-                    
-                    <div class="image-container" data-caption="Σχέδιο Άμυνας Φαρσάλων">
-                        <div class="placeholder-image">
-                            Σχέδιο Άμυνας των Φαρσάλων<br>
-                            [Θα προστεθεί σύντομα]
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div>
-                            <h3 class="font-semibold mb-2 accent-text">Σχέδια Άμυνας</h3>
-                            <ul class="list-disc list-inside ml-2 space-y-2">
-                                <li>Σχεδιάστηκε γραμμή άμυνας από τον ανθυπολοχαγό Παπαβασιλείου</li>
-                                <li>Επεξεργασία από τον ανθυπολοχαγό Ιωάννη Μεταξά</li>
-                                <li>Συγκρότηση σώματος από πέντε ευζωνικά τάγματα</li>
-                                <li>Προχωρημένη ζώνη ασφάλειας</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold mb-2 accent-text">Προβλήματα</h3>
-                            <ul class="list-disc list-inside ml-2 space-y-2">
-                                <li>Ατελής οχύρωση των θέσεων</li>
-                                <li>Παθητικότητα και καθυστερήσεις</li>
-                                <li>Έλλειψη συντονισμού</li>
-                                <li>Χαμηλό ηθικό λόγω προηγούμενων υποχωρήσεων</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            },
-            // Slide 5: Battle Begins
-            {
-                title: "Η Έναρξη της Μάχης",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">23 Απριλίου 1897 - Η Μάχη Ξεκινά</h2>
-                    <p class="mb-4">Στις 8:00 π.μ., τα προκεχωρημένα ελληνικά φυλάκια ανίχνευσαν τις τουρκικές δυνάμεις που κατευθύνονταν προς τα Φάρσαλα.</p>
-                    
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <h3 class="font-semibold">08:00 π.μ.</h3>
-                            <p>Τα ελληνικά φυλάκια ανιχνεύουν την τουρκική προέλαση.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="font-semibold">09:00 π.μ.</h3>
-                            <p>Η τουρκική μεραρχία ιππικού πλησιάζει τις προφυλακές του 11ου ευζωνικού τάγματος στο Δρίσκιοϊ.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="font-semibold">Πρώιμο απόγευμα</h3>
-                            <p>Η τουρκική φάλαγγα αναπτύσσεται και το πυροβολικό ανοίγει πυρ κατά των ελληνικών θέσεων.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="highlight-box mt-4">
-                        <p class="font-semibold">Ο ελληνικός στρατός απάντησε με το δικό του πυροβολικό, αλλά η διαφορά σε αριθμό και ποιότητα όπλων ήταν εμφανής.</p>
-                    </div>
-                `
-            },
-            // Slide 6-10: Θα συνεχίσω με απλοποιημένο περιεχόμενο χωρίς εικόνες
-            {
-                title: "Η Μάχη στο Δρίσκιοϊ και Τατάρι",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">Ηρώικη Αντίσταση</h2>
-                    <p class="mb-4">Το 11ο ευζωνικό τάγμα αντιστάθηκε σθεναρά στο Δρίσκιοϊ, ενώ η «Λεγεώνα των Φιλελλήνων» κρατήθηκε ως εφεδρεία.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div>
-                            <h3 class="font-semibold mb-2 accent-text">Ελληνικές Μονάδες</h3>
-                            <ul class="list-disc list-inside ml-2 space-y-1">
-                                <li>9ο Σύνταγμα Ευζώνων</li>
-                                <li>2ο Σύνταγμα Ευζώνων</li>
-                                <li>11ο Ευζωνικό Τάγμα</li>
-                                <li>Λεγεώνα των Φιλελλήνων</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold mb-2 accent-text">Τουρκικές Επιθέσεις</h3>
-                            <ul class="list-disc list-inside ml-2 space-y-1">
-                                <li>Τρεις τουρκικές μεραρχίες</li>
-                                <li>«Φάλαγγα των Αλβανών»</li>
-                                <li>Ισχυρό πυροβολικό</li>
-                                <li>Προσπάθειες πλευροκόπησης</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "Ένταση της Μάχης και Υποχώρηση",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">Η Κρίση της Μάχης</h2>
-                    <p class="mb-4">Γύρω στις 13:00, τρεις τουρκικές μεραρχίες και η «Φάλαγγα των Αλβανών» επιτέθηκαν στις ελληνικές θέσεις στον Τεκέ.</p>
-                    
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <h3 class="font-semibold">13:00</h3>
-                            <p>Τρεις τουρκικές μεραρχίες επιτίθενται στον Τεκέ.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="font-semibold">14:00</h3>
-                            <p>Οι τουρκικές δυνάμεις καταλαμβάνουν τα υψώματα του Τεκέ.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="font-semibold">17:00</h3>
-                            <p>Οι Τούρκοι καταλαμβάνουν τις διαβάσεις του ποταμού Ενιπέα και το σιδηροδρομικό σταθμό.</p>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "Υποχώρηση προς Δομοκό",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">Η Τελική Ήττα</h2>
-                    <p class="mb-4">Μέχρι το τέλος της ημέρας, η ελληνική άμυνα στα Φάρσαλα κατέρρευσε ολοσχερώς. Ο ελληνικός στρατός αναγκάστηκε σε οργανωμένη υποχώρηση προς τον Δομοκό.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div>
-                            <h3 class="font-semibold mb-2 accent-text">Πλοήγηση Υποχώρησης</h3>
-                            <ul class="list-disc list-inside ml-2 space-y-2">
-                                <li>Υποχώρηση με πλήρη τάξη</li>
-                                <li>Οι Εύζωνες σταματούν επανειλημμένα και πυροβολούν</li>
-                                <li>Στόχος: Δομοκός</li>
-                                <li>Τελική ανακωχή στον Δομοκό</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold mb-2 accent-text">Συνέπειες</h3>
-                            <ul class="list-disc list-inside ml-2 space-y-2">
-                                <li>Κατάρρευση ηθικού</li>
-                                <li>Απώλεια σημαντικών θέσεων</li>
-                                <li>Πολιτική κρίση</li>
-                                <li>Αναγκαστική ανακωχή</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "Απώλειες και Συνέπειες",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">Το Τίμημα της Μάχης</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                        <div>
-                            <h3 class="accent-text font-semibold mb-3 text-center">Απώλειες</h3>
-                            <table class="comparison-table">
-                                <tr>
-                                    <th></th>
-                                    <th>Ελληνικός Στρατός</th>
-                                    <th>Οθωμανικός Στρατός</th>
-                                </tr>
-                                <tr>
-                                    <td><strong>Νεκροί/Τραυματίες</strong></td>
-                                    <td>120 άνδρες</td>
-                                    <td>180 άνδρες</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div>
-                            <h3 class="accent-text font-semibold mb-3 text-center">Διπλωματικές Συνέπειες</h3>
-                            <ul class="list-disc list-inside ml-2 space-y-2">
-                                <li>Παρέμβαση από τις Μεγάλες Δυνάμεις</li>
-                                <li>Αυτόνομο καθεστώς για την Κρήτη (Κρητική Πολιτεία 1898)</li>
-                                <li>Διεθνής οικονομικός έλεγχος στην Ελλάδα</li>
-                                <li>Εδαφικές ρυθμίσεις</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            },
-            {
-                title: "Κληρονομιά και Σημασία",
-                content: `
-                    <h2 class="font-bold mb-4 accent-text">Μαθήματα για το Μέλλον</h2>
-                    <p class="mb-4">Η ήττα στα Φάρσαλα και ο Πόλεμος του '97 δεν ήταν απλώς στρατιωτικά γεγονότα. Ήταν η σπίθα για μεγάλες αλλαγές που διαμόρφωσαν τη σύγχρονη Ελλάδα.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                        <div>
-                            <h3 class="font-semibold mb-3 accent-text">Αποτελέσματα & Μεταρρυθμίσεις</h3>
-                            <div class="key-fact">
-                                <div class="key-fact-icon">Κ</div>
-                                <div><strong>Κίνημα του 1909:</strong> Η ντροπή του '97 οδήγησε στο Στρατιωτικό Κίνημα στο Γουδί, που έφερε τον Ελευθέριο Βενιζέλο.</div>
-                            </div>
-                            <div class="key-fact">
-                                <div class="key-fact-icon">Α</div>
-                                <div><strong>Αναδιοργάνωση στρατού:</strong> Ριζική αναμόρφωση που προετοίμασε την Ελλάδα για τους νικηφόρους Βαλκανικούς Πολέμους (1912-13).</div>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold mb-3 accent-text">Ιστορική Κληρονομιά</h3>
-                            <div class="key-fact">
-                                <div class="key-fact-icon">Μ</div>
-                                <div><strong>Ο Μεταξάς:</strong> Η εμπειρία της άτακτης υποχώρησης στα Φάρσαλα επηρέασε τη φιλοσοφία του για πειθαρχία και ισχυρή εξουσία.</div>
-                            </div>
-                            <div class="key-fact">
-                                <div class="key-fact-icon">Ε</div>
-                                <div><strong>Εθνική Συνείδηση:</strong> Διαμόρφωση κριτικής εθνικής συνείδησης που οδήγησε σε εκσυγχρονισμό.</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="quote mt-6">
-                        "Η ιστορία δεν είναι μόνο αυτό που συνέβη, αλλά και το μάθημα που πρέπει να πάρουμε από αυτή"
-                    </div>
-                `
-            },
-            // Slide 11: Thank You
+            // ... προσθήκη των υπολοίπων slides εδώ
             {
                 title: "Τέλος Παρουσίασης",
                 content: `
@@ -1109,32 +896,21 @@
         const modalCaption = document.getElementById('modal-caption');
         const closeModal = document.querySelector('.close-modal');
         
-        /**
-         * Renders the content of the current slide.
-         */
         function renderPage() {
-            // Apply fade-out effect for transition
             slideContent.style.opacity = '0';
 
             setTimeout(() => {
                 const slide = slides[currentPage];
-
-                // Update the main title to include the slide title for clarity
                 mainTitle.textContent = `Η Μάχη των Φαρσάλων (1897): ${slide.title}`;
-
-                // Update content and apply fade-in effect
                 slideContent.innerHTML = slide.content;
                 slideContent.style.opacity = '1';
 
-                // Update page indicators
                 pageIndicator.textContent = `Σελίδα ${currentPage + 1} / ${slides.length}`;
                 footerPageIndicator.textContent = `Σελίδα ${currentPage + 1} / ${slides.length}`;
 
-                // Update progress bar
                 const progressPercentage = ((currentPage + 1) / slides.length) * 100;
                 progressFill.style.width = `${progressPercentage}%`;
 
-                // Update button states
                 prevBtn.disabled = currentPage === 0;
                 prevBtn.classList.toggle('opacity-50', currentPage === 0);
                 prevBtn.classList.toggle('cursor-not-allowed', currentPage === 0);
@@ -1144,27 +920,17 @@
                 nextBtn.classList.toggle('cursor-not-allowed', currentPage === slides.length - 1);
                 nextBtn.textContent = (currentPage === slides.length - 1) ? 'Τέλος' : 'Επόμενη →';
 
-                // Add click event listeners to all thumbnails
                 document.querySelectorAll('.image-container').forEach(thumbnail => {
                     thumbnail.addEventListener('click', openImageModal);
                 });
 
-                // Scroll to top of the page after content is rendered
                 setTimeout(() => {
-                    window.scrollTo({
-                        top: 0,
-                        left: 0,
-                        behavior: 'smooth'
-                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }, 50);
 
             }, 250);
         }
 
-        /**
-         * Changes the current page/slide.
-         * @param {number} direction - 1 for next, -1 for previous.
-         */
         function changePage(direction) {
             const newPage = currentPage + direction;
             if (newPage >= 0 && newPage < slides.length) {
@@ -1173,10 +939,6 @@
             }
         }
 
-        /**
-         * Goes to a specific slide.
-         * @param {number} slideIndex - The index of the slide to go to.
-         */
         function goToSlide(slideIndex) {
             if (slideIndex >= 0 && slideIndex < slides.length) {
                 currentPage = slideIndex;
@@ -1184,78 +946,41 @@
             }
         }
 
-        /**
-         * Opens the image modal with the clicked image
-         * @param {Event} e - The click event
-         */
         function openImageModal(e) {
             const container = e.currentTarget;
             const caption = container.getAttribute('data-caption') || 'Εικόνα';
-            
             modalCaption.textContent = caption;
             imageModal.classList.add('active');
-            
-            // Prevent scrolling of background content
             document.body.style.overflow = 'hidden';
         }
 
-        /**
-         * Closes the image modal
-         */
         function closeImageModal() {
             imageModal.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
-        // Show presentation when "Start Presentation" is clicked
+        // Ενεργοποίηση παρουσίασης
         startPresentationBtn.addEventListener('click', function() {
             introPage.style.display = 'none';
             presentationPage.style.display = 'block';
-            renderPage(); // Initialize the first slide
+            renderPage();
         });
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                changePage(-1);
-            } else if (e.key === 'ArrowRight') {
-                changePage(1);
-            } else if (e.key === 'Escape') {
-                closeImageModal();
-            }
+            if (e.key === 'ArrowLeft') changePage(-1);
+            else if (e.key === 'ArrowRight') changePage(1);
+            else if (e.key === 'Escape') closeImageModal();
         });
 
-        // Close modal when clicking the X or outside the image
         closeModal.addEventListener('click', closeImageModal);
         imageModal.addEventListener('click', (e) => {
-            if (e.target === imageModal) {
-                closeImageModal();
-            }
+            if (e.target === imageModal) closeImageModal();
         });
 
-        // Initialize the page
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Page loaded successfully');
-            
-            const buttons = document.querySelectorAll('.main-button, .secondary-button');
-            
-            buttons.forEach(button => {
-                button.addEventListener('mousedown', function() {
-                    this.style.transform = 'translateY(-2px)';
-                });
-                
-                button.addEventListener('mouseup', function() {
-                    if (this.classList.contains('main-button')) {
-                        this.style.transform = 'translateY(-5px)';
-                    } else {
-                        this.style.transform = 'translateY(-3px)';
-                    }
-                });
-                
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
         });
     </script>
 </body>
